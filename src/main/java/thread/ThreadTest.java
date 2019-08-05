@@ -35,6 +35,7 @@ public class ThreadTest {
 
     public static void startTask(String str) {
         Lock lock = null;
+        System.out.println("gitTest");
         synchronized (LockMap) {
             lock = LockMap.get(str);
             if(null == lock){

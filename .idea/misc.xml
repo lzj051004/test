@@ -11,7 +11,10 @@
     </session>
   </component>
   <component name="FrameworkDetectionExcludesConfiguration">
-    <file type="web" url="file://$PROJECT_DIR$/../test" />
+    <file type="web" url="file://$PROJECT_DIR$" />
+  </component>
+  <component name="JavaScriptSettings">
+    <option name="languageLevel" value="ES6" />
   </component>
   <component name="MavenProjectsManager">
     <option name="originalFiles">
@@ -21,6 +24,6 @@
     </option>
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" project-jdk-name="1.8" project-jdk-type="JavaSDK">
-    <output url="file://$PROJECT_DIR$/../test/out" />
+    <output url="file://$PROJECT_DIR$/out" />
   </component>
 </project>
