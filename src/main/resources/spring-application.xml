@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+
+	<description>Spring公共配置文件</description>
+	<!-- 对所有类进行扫描，以完成Bean创建和自动依赖注入的功能 -->
+	<context:component-scan base-package="controller" />
+
+	<!-- 激活@Controller模式 -->
+	<mvc:annotation-driven />
+
+	<bean id="executorService" class="java.util.concurrent.ThreadPoolExecutor">
+		<constructor-arg value="8" index="0"/>
+		<constructor-arg value="16" index="1"/>
+		<constructor-arg value="60" index="2"/>
+		<constructor-arg value="SECONDS" index="3" type="java.util.concurrent.TimeUnit"/>
+		<constructor-arg index="4">
+			<bean class="java.util.concurrent.LinkedBlockingQueue">
+				<constructor-arg value="500"/>
+			</bean>
+		</constructor-arg>
+		<constructor-arg index="5">
+			<bean class="java.util.concurrent.ThreadPoolExecutor$DiscardOldestPolicy"/>
+		</constructor-arg>
+	</bean>
+
+	<!-- 将日志类注入到bean中。 -->
+	<!--<bean id="logAspect" class="com.clife.commons.utils.admin.aspect.LogAspect4Api"></bean>
+
+	<aop:config>
+		<aop:aspect id="logAspect" ref="logAspect">                                                   &lt;!&ndash; 调用日志拦截类 &ndash;&gt;
+			<aop:pointcut id="log"
+						  expression="execution(* com.clife.manage.api.web.controller..*.*(..))" />
+			<aop:around pointcut-ref="log"
+						method="around" />
+		</aop:aspect>
+	</aop:config>-->
+
+	<!-- 使用自定义的系统日志： 调用系统日志拦截类 2018-10-19 -->
+	<bean id="systemLogAspect" class="log.LogAspect4Api">
+	</bean>
+
+	<aop:config>
+		<aop:aspect id="logAspect" ref="systemLogAspect">
+			<aop:pointcut id="log" expression="execution(* controller..*.*(..))" />
+			<aop:around pointcut-ref="log" method="around" />
+		</aop:aspect>
+	</aop:config>
+
+
+	<!--com.baidu.disconf.client.addons.properties.ReloadingPropertyPlaceholderConfigurer
+    org.springframework.beans.factory.config.PropertyPlaceholderConfigurer
+    com.clife.api.device.connect.filter.CustomizedPropertyConfigurer-->
+</beans>
